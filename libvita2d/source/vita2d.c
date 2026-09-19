@@ -62,6 +62,8 @@ static int clip_rect_x_min = 0;
 static int clip_rect_y_min = 0;
 static int clip_rect_x_max = DISPLAY_WIDTH;
 static int clip_rect_y_max = DISPLAY_HEIGHT;
+static int current_draw_width = DISPLAY_WIDTH;
+static int current_draw_height = DISPLAY_HEIGHT;
 static int vblank_wait = 1;
 static int drawing = 0;
 static int clipping_enabled = 0;
@@ -856,6 +858,10 @@ void vita2d_start_drawing_advanced(vita2d_texture *target, unsigned int flags)
 {
 
 	if (target == NULL) {
+		current_draw_width = DISPLAY_WIDTH;
+		current_draw_height = DISPLAY_HEIGHT;
+		matrix_init_orthographic(_vita2d_ortho_matrix, 0.0f, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0.0f, 0.0f, 1.0f);
+
 		if (system_app_mode) {
 			sceSharedFbBegin(shared_fb, &shared_fb_info);
 			shared_fb_info.vsync = vblank_wait;
@@ -871,6 +877,17 @@ void vita2d_start_drawing_advanced(vita2d_texture *target, unsigned int flags)
 		&displaySurface[backBufferIndex],
 		&depthSurface);
 	} else {
+		current_draw_width = vita2d_texture_get_width(target);
+		current_draw_height = vita2d_texture_get_height(target);
+		matrix_init_orthographic(
+			_vita2d_ortho_matrix,
+			0.0f,
+			(float)current_draw_width,
+			(float)current_draw_height,
+			0.0f,
+			0.0f,
+			1.0f);
+
 		sceGxmBeginScene(
 		_vita2d_context,
 		flags,
@@ -937,7 +954,7 @@ void vita2d_set_clip_rectangle(int x_min, int y_min, int x_max, int y_max)
 			SCE_GXM_STENCIL_OP_ZERO,
 			0xFF,
 			0xFF);
-		vita2d_draw_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0);
+		vita2d_draw_rectangle(0, 0, current_draw_width, current_draw_height, 0);
 		// set the stencil to 1 in the desired region
 		sceGxmSetFrontStencilFunc(
 			_vita2d_context,
