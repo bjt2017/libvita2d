@@ -6,6 +6,7 @@
 #include <psp2/kernel/sysmem.h>
 #include <psp2/pgf.h>
 #include <psp2/pvf.h>
+#include <math.h>
 
 #ifdef __cplusplus
 extern "C" {
