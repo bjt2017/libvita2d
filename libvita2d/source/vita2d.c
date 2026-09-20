@@ -996,6 +996,11 @@ void vita2d_get_clip_rectangle(int *x_min, int *y_min, int *x_max, int *y_max)
 	*y_max = clip_rect_y_max;
 }
 
+float* vita2d_get_ortho_matrix()
+{
+    return _vita2d_ortho_matrix;
+}
+
 int vita2d_common_dialog_update()
 {
 	SceCommonDialogUpdateParam updateParam;

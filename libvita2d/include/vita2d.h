@@ -64,6 +64,8 @@ int vita2d_init_advanced_with_msaa(unsigned int temp_pool_size, SceGxmMultisampl
 void vita2d_wait_rendering_done();
 int vita2d_fini();
 
+float* vita2d_get_ortho_matrix();
+
 void vita2d_clear_screen();
 void vita2d_swap_buffers();
 

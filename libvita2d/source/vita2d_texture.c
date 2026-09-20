@@ -114,6 +114,8 @@ static vita2d_texture *_vita2d_create_empty_texture_format_advanced(unsigned int
 
 	if (isRenderTarget) {
 
+		const uint32_t colorStride = ALIGN(w, 8);
+
 		int err = sceGxmColorSurfaceInit(
 			&texture->gxm_sfc,
 			SCE_GXM_COLOR_FORMAT_A8B8G8R8,
@@ -122,7 +124,7 @@ static vita2d_texture *_vita2d_create_empty_texture_format_advanced(unsigned int
 			SCE_GXM_OUTPUT_REGISTER_SIZE_32BIT,
 			w,
 			h,
-			w,
+			colorStride,
 			texture_data
 		);
 
